@@ -1,0 +1,8 @@
+---
+
+ETCD_INSTALL_DIR: /Users/lonay/Desktop/etcd-v3.2.9-linux-amd64
+ETCD_USER: etcd
+ETCD_NAME: default
+ETCD_DATA_DIR: /data/etcd/
+ETCD_WORK_DIR: /var/lib/etcd/
+ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379

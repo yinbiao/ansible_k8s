@@ -1,0 +1,23 @@
+---
+
+  - hosts: "k_pro_master"
+    gather_facts: True
+    serial: "3"
+    tasks:
+
+      - name: pull cert 
+        synchronize: mode=pull src=/data/cert dest=/tmp/
+
+
+  - hosts: "192.168.60.212"
+    gather_facts: True
+    serial: "3"
+    tasks:
+      - name: create
+        file: path=/data/ state=directory
+
+      - name: push cert
+        synchronize: src=/tmp/cert dest=/data/
+
+      - name: set perm
+        shell: chmod -R 500 /data/cert && chown -R root:root /data/cert

@@ -1,0 +1,11 @@
+---
+
+  - hosts: "k_pro_master"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+      - vars/pro/cert.yml
+      - vars/pro/dns.yml
+    roles:
+      - { role: k_cert_install }

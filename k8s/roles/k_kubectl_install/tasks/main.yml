@@ -1,0 +1,15 @@
+---
+
+
+  - name: upload bin file
+    copy: src={{ KUBENETES_INSTALL_DIR }}/kubectl dest=/usr/bin/ mode=0755
+
+  - name: copy kubectl client ssl
+    template: src=set_kubectl_clientssl.sh dest=/tmp/ mode=0755
+
+  - name: create .kube dir
+    file: path=/root/.kube state=directory
+
+  - name: copy config
+    template: src=config dest=/root/.kube/
+  

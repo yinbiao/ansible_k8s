@@ -1,0 +1,32 @@
+---
+
+  - name: create ca
+    file: path=/data/cert state=directory
+
+  - name: run 
+    shell: openssl genrsa -out ca.key 2048 chdir=/data/cert
+
+  - name: run
+    shell: openssl req -x509 -new -nodes -key ca.key -subj "/CN={{ dns_domain }}" -days 5000 -out ca.crt chdir=/data/cert
+
+  - name: run
+    shell: openssl genrsa -out server.key 2048 chdir=/data/cert
+
+  - name: upload master ssl file
+    template: src=master_ssl.cnf dest=/data/cert
+
+  - name: run
+    shell: openssl req -new -key server.key -subj "/CN={{ KUBE_MASTER_NAME }}" -config master_ssl.cnf -out server.csr chdir=/data/cert
+
+  - name: run
+    shell: openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 5000 -extensions v3_req -extfile master_ssl.cnf -out server.crt chdir=/data/cert
+
+  - name: run
+    shell: openssl genrsa -out cs_client.key 2048 chdir=/data/cert
+
+  - name: run
+    shell: openssl req -new -key cs_client.key -subj "/CN={{ KUBE_CS_NAME }}" -out cs_client.csr chdir=/data/cert
+
+  - name: run
+    shell: openssl x509 -req -in cs_client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 5000 -out cs_client.crt chdir=/data/cert
+

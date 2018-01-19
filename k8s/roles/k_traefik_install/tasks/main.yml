@@ -1,0 +1,11 @@
+---
+
+
+  - name: upload  file
+    template: src={{ item }} dest=/tmp/
+    with_items:
+      - traefik_rbac.yml
+      - traefik_ds.yml
+      - traefik_webui.yml
+
+

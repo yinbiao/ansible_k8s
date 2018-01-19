@@ -1,0 +1,28 @@
+---
+
+  - name: upload bin file
+    copy: src={{ KUBENETES_INSTALL_DIR }}/kube-controller-manager dest=/usr/bin/ mode=0755
+
+  - name: create config directory
+    file: path=/etc/kubernetes state=directory
+
+  - name: upload  file
+    template: src=controller-manager dest=/etc/kubernetes
+    tags: [config]
+
+  - name: upload kubeconfig
+    template: src=kubeconfig.yaml dest=/etc/kubernetes/
+    tags: [config]
+
+  - name: upload service file
+    template: src=kube-controller-manager.service dest=/usr/lib/systemd/system/
+    tags: [config]
+
+  - name: create user 
+    user: name={{ KUBE_USER }} system=yes
+
+  - name: create workdir
+    file: path={{ KUBE_WORKDIR }} owner={{ KUBE_USER }} group={{ KUBE_USER }} state=directory
+
+  - name: start
+    service: name=kube-controller-manager enabled=yes state=started

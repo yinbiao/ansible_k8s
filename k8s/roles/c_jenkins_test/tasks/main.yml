@@ -1,0 +1,10 @@
+---
+
+  - name: create yaml directory
+    file: path=/opt/k8s/ state=directory
+
+  - name: upload yaml directory 
+    synchronize: src={{ inventory_dir }}/k8s/releasescript/jenkins dest=/opt/k8s/ checksum=yes delete=yes
+
+  - name: set perm
+    shell: chmod -R 755 /opt/k8s/jenkins

@@ -1,0 +1,33 @@
+yum install *rhsm*
+否则会出现错误：/etc/docker/certs.d/registry.access.redhat.com/redhat-ca.crt: no such file or directory
+
+
+
+开启ServiceAccount： http://dockone.io/article/599
+
+
+查看pod
+
+kubectl get nodes
+kubectl get deployments --all-namespaces
+kubectl get ReplicationController  --all-namespaces
+kubectl get DaemonSets  --all-namespaces
+kubectl get ReplicaSets --all-namespaces
+kubectl get pods --all-namespaces
+
+查看endpoint
+
+kubectl get services  --all-namespaces
+kubectl get endpoints  --all-namespaces
+
+
+依赖——
+
+jenkins执行节点上要安装bc工具
+
+
+flanneld etcd设置：etcdctl set /coreos.com/network/config '{ "Network": "172.17.0.0/16" }'
+
+给node打标签：
+kubectl label nodes kube-node node=kube-node
+kubectl get node -a -l "node=kube-node"

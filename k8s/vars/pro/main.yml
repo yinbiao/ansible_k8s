@@ -1,0 +1,25 @@
+---
+
+KUBENETES_INSTALL_DIR: /Users/lonay/kubernetes/server/kubernetes/server/bin
+FLANNEL_INSTALL_DIR: /Users/lonay/Documents/mogo/storehouse/flannel-v0.9.1-linux-amd64
+
+KUBE_MASTER_IP: 192.168.60.62
+KUBE_MASTER_PORT: 6443
+KUBE_MASTER_NAME: k8s-master
+KUBE_MASTER: https://192.168.60.62:6443
+KUBE_ETCD_SERVERS: http://192.168.60.66:2379
+KUBELET_API_SERVER: https://192.168.60.62:6443
+
+KUBE_WORKDIR: /data/kubernetes
+KUBE_USER: kube
+
+KUBE_CLUSTER_NAME: kubernetes.default 
+KUBE_CLUSTER_IP: 10.250.0.1
+
+KUBE_CS_NAME: k8s-master #controller-manager节点主机名称
+
+KUBE_FLANNEL_GW: 10.250.0.0/16
+
+traefik_host: traefik.mgzf.com
+
+select_node: 192.168.60.252

@@ -1,0 +1,49 @@
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow-privileged=false"
+
+KUBE_MASTER="--master={{ KUBE_MASTER }}"
+
+
+
+###
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=0.0.0.0"
+
+# The port for the info server to serve on
+KUBELET_PORT="--port=10250"
+
+# You may leave this blank to use the actual hostname
+KUBELET_HOSTNAME="--hostname-override={{ ansible_default_ipv4.address }}"
+
+
+# pod infrastructure container
+#KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest"
+KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=registry.mgzf.com/rhel7/pod-infrastructure:latest"
+
+# Add your own! --kubeconfig=/etc/kubernetes/kubeconfig.yaml
+KUBELET_ARGS="--fail-swap-on=false \
+              --allow-privileged=true \
+              --cluster_dns={{ dns_server }} \
+              --cluster_domain={{ dns_domain }} \
+              --kubeconfig=/etc/kubernetes/kubeconfig.yaml"
+
+

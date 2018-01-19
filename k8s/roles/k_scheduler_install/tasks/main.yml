@@ -1,0 +1,22 @@
+---
+
+  - name: upload bin file
+    copy: src={{ KUBENETES_INSTALL_DIR }}/kube-scheduler dest=/usr/bin/ mode=0755
+
+  - name: create config directory
+    file: path=/etc/kubernetes state=directory
+
+  - name: upload  file
+    template: src=scheduler dest=/etc/kubernetes
+
+  - name: upload service file
+    template: src=kube-scheduler.service dest=/usr/lib/systemd/system/
+
+  - name: create user 
+    user: name={{ KUBE_USER }} system=yes
+
+  - name: create workdir
+    file: path={{ KUBE_WORKDIR }} owner={{ KUBE_USER }} group={{ KUBE_USER }} state=directory
+
+  - name: start
+    service: name=kube-scheduler.service enabled=yes state=started

@@ -1,0 +1,12 @@
+---
+
+
+  - name: upload  file
+    template: src={{ item }} dest=/tmp/
+    with_items:
+      - kubedns-cm.yaml
+      - kubedns-controller.yaml
+      - kubedns-sa.yaml
+      - kubedns-svc.yaml
+
+

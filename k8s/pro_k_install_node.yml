@@ -1,0 +1,15 @@
+---
+
+  - hosts: "k_pro_node"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+      - vars/pro/docker.yml
+      - vars/pro/dns.yml
+    roles:
+      - { role: k_docker_install }
+      - { role: k_flannel_install }
+      - { role: k_kubelet_install }
+      - { role: k_proxy_install }
+

@@ -1,0 +1,9 @@
+---
+
+  - hosts: "192.168.60.68"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+    roles:
+      - { role: k_kubectl_install }

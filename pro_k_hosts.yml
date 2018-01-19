@@ -1,0 +1,40 @@
+#k8s测试hosts
+
+192.168.60.62 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.62
+
+192.168.60.63 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.63
+192.168.60.66 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.66
+
+192.168.60.252 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.252
+192.168.60.254 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.254
+
+192.168.60.68 ansible_ssh_port=40000 ansible_ssh_host=192.168.60.68
+
+[k_master]
+192.168.60.62
+
+[k_pro_master]
+192.168.60.62
+
+[k_pro_registry]
+192.168.60.63
+
+[k_pro_etcd]
+192.168.60.66
+
+[k_pro_node]
+192.168.60.252
+192.168.60.254
+
+[k_pro_webconsole]
+192.168.60.68
+
+
+[k_pro_all:children]
+k_pro_master
+k_pro_node
+
+[k_all:children]
+k_pro_all
+k_pro_registry
+k_pro_etcd

@@ -1,0 +1,9 @@
+---
+
+  - hosts: "k_pro_node"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+    roles:
+      - { role: k_flannel_install }

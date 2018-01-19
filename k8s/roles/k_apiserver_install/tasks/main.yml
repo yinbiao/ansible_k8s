@@ -1,0 +1,27 @@
+---
+
+  - name: upload bin file
+    copy: src={{ KUBENETES_INSTALL_DIR }}/kube-apiserver dest=/usr/bin/ mode=0755
+
+  - name: create config directory
+    file: path=/etc/kubernetes state=directory
+
+  - name: upload apiserver file
+    template: src=apiserver dest=/etc/kubernetes
+    tags: [config]
+
+  - name: upload service file
+    template: src=kube-apiserver.service dest=/usr/lib/systemd/system/
+    tags: [config]
+
+  - name: create user 
+    user: name={{ KUBE_USER }} system=yes
+
+  - name: create workdir
+    file: path={{ KUBE_WORKDIR }} owner={{ KUBE_USER }} group={{ KUBE_USER }} state=directory
+
+  - name: create kube-serviceaccount.key
+    shell: openssl genrsa -out /etc/kubernetes/kube-serviceaccount.key 2048
+
+  - name: start kube-apiserver
+    service: name=kube-apiserver enabled=yes state=started

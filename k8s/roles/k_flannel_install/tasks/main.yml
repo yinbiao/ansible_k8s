@@ -1,0 +1,43 @@
+---
+
+
+  - name: upload bin file
+    copy: src={{ FLANNEL_INSTALL_DIR }}/flanneld dest=/usr/bin/ mode=0755
+
+  - name: upload flannel opts file
+    copy: src={{ FLANNEL_INSTALL_DIR }}/mk-docker-opts.sh dest=/opt/ mode=0755
+    tags: [init]
+
+  - name: upload init.sh
+    template: src=init.sh dest=/opt/init.sh mode=0755
+    tags: [init]
+
+  - name: create config directory
+    file: path=/etc/kubernetes state=directory
+
+  - name: upload  file
+    template: src=kube-flannel.yml dest=/etc/kubernetes
+    tags: [config]
+
+  - name: upload flanneld config
+    template: src=flanneld dest=/etc/sysconfig/flanneld
+    tags: [config]
+
+  - name: upload service file
+    template: src=flanneld.service dest=/usr/lib/systemd/system/
+    tags: [config]
+
+  - name: create user 
+    user: name={{ KUBE_USER }} system=yes
+
+  - name: create workdir
+    file: path={{ KUBE_WORKDIR }} owner={{ KUBE_USER }} group={{ KUBE_USER }} state=directory
+    tags: [config]
+
+  - name: start
+    service: name=flanneld.service enabled=yes state=restarted
+    tags: [start]
+
+  - name: init
+    shell: /opt/init.sh
+    tags: [init]

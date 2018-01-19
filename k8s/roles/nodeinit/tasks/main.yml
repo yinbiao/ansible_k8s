@@ -1,0 +1,4 @@
+---
+
+  - include: installjdk.yml
+    when: INSTALL_JDK

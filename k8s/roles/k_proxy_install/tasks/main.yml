@@ -1,0 +1,26 @@
+---
+
+
+  - name: upload bin file
+    copy: src={{ KUBENETES_INSTALL_DIR }}/kube-proxy dest=/usr/bin/ mode=0755
+
+  - name: create config directory
+    file: path=/etc/kubernetes state=directory
+
+  - name: upload  file
+    template: src=proxy dest=/etc/kubernetes
+    tags: [config]
+
+  - name: upload service file
+    template: src=kube-proxy.service dest=/usr/lib/systemd/system/
+
+  - name: create user 
+    user: name={{ KUBE_USER }} system=yes
+
+  - name: create workdir
+    file: path={{ KUBE_WORKDIR }} owner={{ KUBE_USER }} group={{ KUBE_USER }} state=directory
+    tags: [config]
+
+  - name: start
+    service: name=kube-proxy.service enabled=yes state=started
+    tags: [start]

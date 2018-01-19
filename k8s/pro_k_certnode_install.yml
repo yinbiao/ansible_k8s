@@ -1,0 +1,41 @@
+---
+
+  - hosts: "k_pro_master"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+    
+    tasks:
+
+      - name: pull ca.key
+        synchronize: mode=pull src=/data/cert/ca.key dest=/tmp/ca.key
+
+      - name: pull ca.crt
+        synchronize: mode=pull src=/data/cert/ca.crt dest=/tmp/ca.crt
+
+
+  - hosts: "k_pro_node"
+    gather_facts: True
+    serial: "3"
+    vars_files:
+      - vars/pro/main.yml
+    
+    tasks:
+      - name: create
+        file: path=/data/cert/ state=directory
+
+      - name: push ca.key
+        synchronize: src=/tmp/ca.key dest=/data/cert/ca.key
+
+      - name: push ca.crt
+        synchronize: src=/tmp/ca.crt dest=/data/cert/ca.crt
+
+      - name: run 
+        shell: openssl genrsa -out kubelet_client.key 2048 chdir=/data/cert/
+
+      - name: run
+        shell: openssl req -new -key kubelet_client.key -subj "/CN={{ ansible_default_ipv4.address }}" -out kubelet_client.csr chdir=/data/cert/
+
+      - name: run
+        shell: openssl x509 -req -in kubelet_client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -days 5000 -out kubelet_client.crt chdir=/data/cert/

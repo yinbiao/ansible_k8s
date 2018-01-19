@@ -1,0 +1,4 @@
+---
+
+STORAGE_DIR: /data/docker_registry_storage
+PORT: 5000

@@ -1,0 +1,8 @@
+---
+
+  - name: create config directory
+    file: path={{ STORAGE_DIR }} state=directory
+
+  - name: create docker
+    shell: docker run -d --restart=always --name registry -v /data/certs/:/certs -e REGISTRY_HTTP_ADDR=0.0.0.0:443 -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/mgzf.com.crt -e REGISTRY_HTTP_TLS_KEY=/certs/mgzf.com.key -p 443:443 -v {{ STORAGE_DIR }}:/var/lib/registry registry:2
+

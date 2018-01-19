@@ -1,0 +1,30 @@
+---
+
+  - name: install yum-utils egs
+    yum: name={{ item }} state=latest
+    with_items:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+
+  - name: add repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: open
+    shell: yum-config-manager --enable {{ item }}
+    with_items:
+      - docker-ce-edge
+      - docker-ce-test
+
+  - name: install
+    yum: name=docker-ce-{{ DOCKER_VERSION }} state=latest
+
+  - name: create env file
+    shell: touch /run/docker_opts.env
+
+  - name: upload docker.service
+    template: src=docker.service dest=/lib/systemd/system/docker.service 
+
+  - name: start
+    service: name=docker state=started enabled=yes
+    tags: [start]

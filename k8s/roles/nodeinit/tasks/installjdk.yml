@@ -1,0 +1,19 @@
+---
+
+  - name: create work directory
+    file: path={{ TMP }} state=directory
+
+  - name: upload jdk sh file
+    template: src=jdk_main.sh dest={{ TMP }}/ mode=0744
+
+  - name: download jdk
+    get_url: url=http://192.168.60.55/{{ sh_jdk[item] }} dest={{ TMP }}/{{ sh_jdk[item] }}
+    with_items:
+      - "{{ jdk_version }}"
+
+  - name: install jdk
+    shell: "{{ TMP }}/jdk_main.sh {{ sh_jdk[item] }}"
+    with_items:
+      - "{{ jdk_version }}"
+
+

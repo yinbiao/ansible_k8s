@@ -1,0 +1,31 @@
+---
+
+  - name: create etcd data directory
+    file: path={{ ETCD_DATA_DIR }} state=directory
+
+  - name: create user 
+    user: name={{ ETCD_USER }} home={{ ETCD_DATA_DIR }} system=yes
+
+  - name: upload etcd and etcdctl to /usr/bin
+    copy: src={{ ETCD_INSTALL_DIR }}/{{ item }} dest=/usr/bin/ mode=0755
+    with_items:
+      - etcd
+      - etcdctl
+
+  - name: create directory
+    file: path=/etc/etcd/ state=directory
+
+  - name: upload etcd.conf
+    template: src=etcd.conf dest=/etc/etcd/
+
+  - name: upload service file
+    template: src=etcd.service dest=/usr/lib/systemd/system/
+
+  - name: create etcd data directory
+    file: path=ETCD_DATA_DIR state=directory owner={{ ETCD_USER }} group={{ ETCD_USER }}
+
+  - name: create etcd workdir
+    file: path={{ ETCD_WORK_DIR }} state=directory owner={{ ETCD_USER }} group={{ ETCD_USER }}
+
+  - name: start etcd
+    service: name=etcd.service enabled=yes state=started

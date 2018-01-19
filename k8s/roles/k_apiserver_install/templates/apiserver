@@ -1,0 +1,59 @@
+    ###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow-privileged=false"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master={{ KUBE_MASTER }}"
+
+
+
+
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-apiserver
+#
+
+# The address on the local server to listen to.
+KUBE_API_ADDRESS="--insecure-bind-address={{ KUBE_API_ADDRESS }}"
+
+# The port on the local server to listen on.
+KUBE_API_PORT="--secure-port=6443"
+
+# Port minions listen on
+# KUBELET_PORT="--kubelet-port=10250"
+
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd-servers={{ KUBE_ETCD_SERVERS }}"
+
+# Address range to use for services
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ KUBE_SERVICE_ADDRESSES }}"
+
+# default admission control policies
+KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
+#KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ResourceQuota"
+
+# Add your own!
+# turn on RBAC --authorization-mode=RBAC
+# --authorization-mode=AlwaysAllow
+
+KUBE_API_ARGS="--allow_privileged=true --service_account_key_file=/etc/kubernetes/kube-serviceaccount.key --client_ca_file=/data/cert/ca.crt --tls-private-key-file=/data/cert/server.key --tls-cert-file=/data/cert/server.crt --insecure-port=0 --secure-port=6443 --authorization-mode=AlwaysAllow"
+
+
+

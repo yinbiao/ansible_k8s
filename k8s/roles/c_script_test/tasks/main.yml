@@ -1,0 +1,7 @@
+---
+  
+  - name: create directory
+    file: path=/data/k8s/ state=directory
+
+  - name: upload script directory
+    synchronize: src={{ inventory_dir }}/k8s/releasescript/script dest=/data/k8s/ checksum=yes delete=yes

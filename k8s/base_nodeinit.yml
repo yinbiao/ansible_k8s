@@ -1,0 +1,10 @@
+---
+#宿主机初始化
+
+  - hosts: "k_pro_node"
+    gather_facts: False
+    serial: "3"
+    vars_files:
+      - ../deploy/storehouse_conf.yml #仓库定义
+    roles:
+      - { role: nodeinit }

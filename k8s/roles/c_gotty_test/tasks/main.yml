@@ -1,0 +1,7 @@
+---
+
+  - name: upload k8s_entry.py
+    template: src=entry.py dest=/usr/sbin/entry.py mode=0755
+
+  - name: upload k8s_entry
+    template: src=entry dest=/usr/sbin/entry mode=0755
